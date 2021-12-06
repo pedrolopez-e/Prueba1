@@ -1,0 +1,100 @@
+//Ejercicio 1 de structs. Guardado de un vector de structs. Importante!!
+#include <stdio.h>
+#include <stdlib.h>
+
+struct estudiante {
+    int legajo;
+    char nombre[50];
+    float promedio;
+  };
+
+int main() {
+  struct estudiante estudiantes[100];
+  int leg, i = 0, contador = 0, maximo, c, aux;
+  FILE *arch;
+
+  printf("Ingrese el numero de legajo del estudiante:\n");
+  scanf("%d", &leg);
+
+  while(leg != 0){
+    estudiantes[i].legajo = leg;
+    printf("Ingrese el nombre:\n");
+    scanf("%s", estudiantes[i].nombre);
+    printf("Ingrese el promedio:\n");
+    scanf("%f", &estudiantes[i].promedio);
+
+  i++;
+  contador++;
+
+  printf("Ingrese otro legajo o el numero 0:\n");
+  scanf("%d", &leg);
+  };
+
+  /*Guardo el largo del vector de estudiantes en una variable*/
+  maximo = contador;
+
+  /*Abro archivo*/
+  arch = fopen("estudiantes.dat", "wb");
+  if (arch == NULL){
+    printf("\nError al abrir el archivo\n");
+    return 1;
+  }
+
+  /*Escribo archivo*/
+  for (i = 0; i < maximo; i++){
+    c = fwrite(&estudiantes[i], sizeof(struct estudiante), 1, arch);
+  };
+
+  if (c != 1){
+    printf("Ocurrio un error al guardar los datos en el archivo\n");
+  }
+
+  c = fclose(arch);
+  if (c != 0){
+    printf("Ocurrio un error al cerrar el archivo\n");
+  }
+
+  return 0;
+}
+---------------------------------------------------------------------------------------------------
+//Ejercicio 2 de structs. Leer archivo guardado en el ejercicio anterior.
+#include <stdio.h>
+#include <stdlib.h>
+
+struct estudiante {
+  int legajo;
+  char nombre[50];
+  float promedio;
+};
+
+int main() {
+  int c, i = 0;
+  float max = 0;
+  struct estudiante estudiantes[100];
+  /*float max = 0;*/
+  FILE *arch;
+
+  /*Abro archivo*/
+  arch = fopen("estudiantes.dat", "rb");
+  if (arch == NULL){
+    printf("\nError al abrir el archivo\n");
+    return 1;
+  }
+
+  /*Leo archivo*/
+  c = fread(&estudiantes[i], sizeof(struct estudiante), 1, arch);
+  while (c == 1){
+    printf("promedio: %f\n", estudiantes[i].promedio);
+    i++;
+    c = fread(&estudiantes[i], sizeof(struct estudiante), 1, arch);
+  };
+
+  /*printf("El promedio maximo es %f", max);*/
+
+  c = fclose(arch);
+  if (c != 0){
+    printf("Ocurrio un error al cerrar el archivo\n");
+  }
+
+  return 0;
+}

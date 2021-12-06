@@ -1,0 +1,150 @@
+//Ejercicio 1
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+    int *vector; //declaro el puntero vector
+    int espacio, i, valor, c; //declaro entre otras cosas, el espacio reservado para el vector
+    FILE *arch;
+
+    printf("Ingrese la cantidad de elementos que quiere guardar en el vector: ");
+    scanf("%d", &espacio);
+
+    vector = (int*)malloc(sizeof(int) * espacio); //reservo el espacio
+
+    for (i = 0; i < espacio; i++){
+        printf("Ingrese el numero a almacenar: ");
+        scanf("%d", &valor);
+        *(vector + i) = valor; //almaceno el valor en la celda i del vector
+    };
+
+    for (i = 0; i < espacio; i++){
+        printf("%d ", *(vector + i)); 
+    };
+
+    /*Abro archivo*/
+    arch = fopen("vector.dat", "wb");
+    if (arch == NULL){
+      printf("\nError al abrir el archivo\n");
+      return 1;
+    }
+
+    /*Escribo lo que tengo que escribir en el archivo*/
+    c = fwrite(vector, sizeof(int), espacio, arch);
+
+    if (c != espacio){
+      printf("Ocurrio un error al guardar los datos en el archivo\n");
+    }
+
+    c = fclose(arch);
+    if (c != 0){
+      printf("Ocurrio un error al cerrar el archivo\n");
+    };
+
+return 0;
+}
+---------------------------------------------------------------------------------------------------
+//Ejercicio 2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+  int c, n = 1, i = 0;
+  int *vector1, *vector2;
+  FILE *arch;
+
+  /*Abro archivo*/
+  arch = fopen("vector.dat", "rb");
+  if (arch == NULL){
+    printf("\nError al abrir el archivo\n");
+    return 1;
+  }
+  
+  //Reservo memoria
+  vector1 = (int*)malloc(sizeof(int));
+
+  /*Leo archivo*/
+  c = fread(vector1 + i, sizeof(int), 1, arch);
+  while (c == 1){
+      vector1 = (int*)realloc(vector1, sizeof(int) * n);
+      printf("%d ", *(vector1 + i));
+      n++;
+      i++;
+      c = fread(vector1 + i, sizeof(int), 1, arch);
+  };
+
+  c = fclose(arch);
+  if (c != 0){
+    printf("Ocurrio un error al cerrar el archivo\n");
+  }
+
+  return 0;
+}
+---------------------------------------------------------------------------------------------------
+//Ejercicio 4
+
+#include <stdio.h>
+#include <stdlib.h>
+
+int *crear_vector(int n, int valor_inicial){
+    int *vector;
+    int i;
+
+    vector = (int*)malloc(sizeof(int) * n);
+
+    if (vector != NULL){                      //Chequeo que se haya reservado bien la memoria
+         for (i = 0; i < n; i++){
+            *(vector + i) = valor_inicial + i;
+         };
+    } else {
+        return NULL;
+    }
+
+    return vector;
+}
+
+int main(){
+    int *vector;
+    int i;
+
+    vector = crear_vector(2, 8);
+
+    for (i = 0; i < 2; i++){
+        printf("%d ", *(vector + i));
+    }
+
+    free(vector);
+return 0;
+}
+--------------------------------------------------------------------------------------------------
+//Ejercicio 5. ESTE ESTÁ MAL NO LO MIRES
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct punto{
+    int x;
+    int y;
+};
+
+struct rectangulo{
+    struct punto superior_izq;
+    struct punto inferior_der;
+};
+
+int main(){
+    struct rectangulo r1;
+    struct rectangulo *p;
+
+    r1.superior_izq.x = 10;
+    r1.superior_izq.y = 25;
+    r1.inferior_der.x = 20;
+    r1.inferior_der.y = 15;
+
+    p = &r1;
+
+    printf("%d ", p->superior_izq.x);
+
+    return 0;
+};

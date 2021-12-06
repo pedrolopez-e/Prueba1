@@ -1,0 +1,93 @@
+//Ejercicio 1 y 2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct nodo{
+    int dato;
+    struct nodo *sgte;
+}nodo;
+
+nodo *insertar_lifo(nodo *l, int d){
+    nodo *nuevo; 
+
+    nuevo = (nodo*)malloc(sizeof(nodo)); 
+
+    nuevo->dato = d; 
+    nuevo->sgte = l; 
+
+    return nuevo; 
+}
+
+void mostrar(nodo *l){
+
+    while(l != NULL){
+        printf("%d ", l->dato);
+        l = l->sgte; 
+    }
+    return;
+}
+
+nodo *destruir(nodo *l){
+    nodo *aux;
+
+    while (l != NULL){
+        aux = l;
+        l = l->sgte;
+        free(aux);
+    }
+
+    printf("Lista destruida");
+    return NULL;
+}
+
+int main(){
+    nodo *lista = NULL;
+    int n = 1;
+
+    while (n != 0){
+        printf("Ingrese un numero entero para agregar a la lista (0 para terminar programa): ");
+        scanf("%d", &n);
+        
+        lista = insertar_lifo(lista, n);
+    }
+
+    mostrar(lista);
+    lista = destruir(lista);
+
+    return 0;
+};
+---------------------------------------------------------------------------------------------------
+//Ejercicio 6, funcion que busca el dato. Acordarse de incluir la libreria para booleanos.
+
+void buscar_dato(nodo *l, int d){
+    int contador = 0;
+    bool existe = false;
+    nodo *anterior;
+
+    anterior = (nodo*)malloc(sizeof(nodo));
+
+    while (l != NULL && existe == false){
+
+        if (l->dato == d){
+            existe = true;
+        } else if (l->sig != NULL && (l->sig)->dato == d){
+            anterior = l;
+        }
+
+        l = l->sig;
+
+        if (contador < 3){
+            contador += 1;
+        };
+    }
+
+    if (existe == true){
+        printf("Se encontró el valor %d ", d);
+        if (contador > 2){
+            printf("y el valor anterior es %d ", anterior->dato);
+        }
+    } else {
+        printf("El valor buscado no se encuentra en la lista\n");
+    }
+}

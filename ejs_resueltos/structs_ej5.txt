@@ -1,0 +1,38 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+struct hora {
+    int hora;
+    int minutos;
+    int segundos;
+};
+
+void diferencia_horaria(struct hora h1, struct hora h2){
+    int total1, total2, diferencia;
+    struct hora hf;
+    total1 = (h1.hora * 3600) + (h1.minutos * 60) + h1.segundos;
+    total2 = (h2.hora * 3600) + (h2.minutos * 60) + h2.segundos;
+    diferencia = total2 - total1;
+    hf.hora = diferencia / 3600;
+    diferencia -= (hf.hora * 3600);
+    hf.minutos = diferencia / 60;
+    diferencia -= (hf.minutos * 60);
+    hf.segundos = diferencia;
+    printf("La diferencia horaria es de %d horas, %d minutos, y %d segundos", hf.hora, hf.minutos, hf.segundos);
+    return;
+
+};
+
+int main() {
+    struct hora h1;
+    struct hora h2;
+
+    printf("Ingrese horas, minutos y segundos de la primera hora:\n");
+    scanf("%d %d %d", &h1.hora, &h1.minutos, &h1.segundos);
+    printf("Ingrese horas, minutos y segundos de la segunda hora:\n");
+    scanf("%d %d %d", &h2.hora, &h2.minutos, &h2.segundos);
+
+    diferencia_horaria(h1, h2);
+    return 0;
+}

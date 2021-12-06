@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct punto {
+    float x;
+    float y;
+};
+
+struct vector {
+    struct punto p1;
+    struct punto p2;
+  };
+
+int main() {
+    struct vector vcompuesto;
+    struct vector v1;
+    struct vector v2;
+
+    printf("Coordenadas del primer punto del vector: ");
+    scanf("%f %f", &v1.p1.x, &v1.p1.y);
+    printf("Coordenadas del segundo punto del vector: ");
+    scanf("%f %f", &v1.p2.x, &v1.p2.y);
+    printf("Coordenadas del primer punto del segundo vector: ");
+    scanf("%f %f", &v2.p1.x, &v2.p1.y);
+    printf("Coordenadas del segundo punto del segundo vector: ");
+    scanf("%f %f", &v2.p2.x, &v2.p2.y);
+
+    vcompuesto.p1.x = v2.p1.x - v1.p1.x;
+    vcompuesto.p1.y = v2.p1.y - v1.p1.y;
+    vcompuesto.p2.x = v2.p2.x - v1.p2.x;
+    vcompuesto.p2.y = v2.p2.y - v1.p2.y;
+
+    printf("El vector resultante esta formado por los puntos (%f, %f) y (%f, %f)", vcompuesto.p1.x, vcompuesto.p1.y, vcompuesto.p2.x, vcompuesto.p2.y);
+    return 0;
+}
+

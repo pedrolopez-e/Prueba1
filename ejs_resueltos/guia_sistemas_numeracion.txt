@@ -1,0 +1,99 @@
+//Ejercicio 12
+#include <stdio.h>
+
+void mostrar_hexa(unsigned char numero){
+    printf("%X\n", numero);
+    return;
+}
+    
+void chequear_pos5(unsigned char numero){
+
+    if ((numero & 0x10) != 0){
+        printf("El bit es 1\n");
+    } else {
+        printf("El bit es 0\n");
+    }
+    return;
+}
+
+void chequear_pos_1y4(unsigned char numero){
+
+    if ((numero & 0x01) != 0 && (numero & 0x08) != 0){
+        printf("Ambos bits estan en 1\n");
+    } else {
+        printf("No estan ambos bits en 1\n");
+    }
+    return;
+}
+
+void chequear_pos_1o4(unsigned char numero){
+
+    if ((numero & 0x01) != 0 || (numero & 0x08) != 0){
+        printf("Alguno de los dos bits esta en 1\n");
+    } else {
+        printf("Ninguno de los dos bits está en 1\n");
+    }
+    return;
+}
+
+unsigned char convertir_extremos_1(unsigned char numero){
+    numero = numero | 0x81;
+    printf("%X", numero);
+}
+
+unsigned char convertir_extremos_0(unsigned char numero){
+    numero = numero & 0x7E;
+    printf("%X", numero);
+}
+
+unsigned char negar(unsigned char numero){
+    numero = ~numero;
+    printf("%d", numero);
+}
+
+int main(){
+    unsigned char numero;
+
+    printf("Ingrese un numero de 8 bits: ");
+    scanf("%hhd", &numero);
+
+    //mostrar_hexa(numero);
+    //chequear_pos5(numero);
+    //chequear_pos_1y4(numero);
+    //chequear_pos_1o4(numero);
+    //convertir_extremos_1(numero);
+    //convertir_extremos_0(numero);
+    //negar(numero);
+
+    return 0;
+}
+
+---------------------------------------------------------------------------------------------------
+//Ejercicio 9 
+#include <stdio.h>
+#include <stdlib.h>
+
+void muostrar_hexa(){
+    unsigned char numero;
+
+    printf("Ingrese un numero decimal que quiera convertir: ");
+    scanf("%hhd", &numero);
+    printf("%hhX\n", numero);
+    return;
+}
+
+void mostrar_deci(){
+    unsigned char numero;
+
+    printf("Ingrese un numero hexadecimal que quiera convertir: ");
+    scanf("%hhx", &numero);
+    printf("%hhd\n", numero);
+    return;
+}
+
+int main(){
+    mostrar_deci();
+    return 0;
+}
+---------------------------------------------------------------------------------------------------
+//Ejercicio 13

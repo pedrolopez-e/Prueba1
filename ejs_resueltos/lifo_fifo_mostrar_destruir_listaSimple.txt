@@ -1,0 +1,74 @@
+//insertar_lifo, insertar_fifo, insertar_ordenado, mostrar, destruir
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct nodo{
+    int dato;
+    struct nodo *sgte;
+}nodo;
+
+nodo *insertar_lifo(nodo *l, int d){
+    nodo *nuevo; 
+
+    nuevo = (nodo*)malloc(sizeof(nodo)); 
+
+    nuevo->dato = d; 
+    nuevo->sgte = l; 
+
+    return nuevo; 
+}
+
+nodo *insertar_fifo(nodo *l, int d){
+    nodo *nuevo, *p;
+
+    nuevo = (nodo*) malloc (sizeof (nodo));
+    nuevo->dato = d;
+    nuevo->sgte = NULL; 
+    if (l == NULL)
+        return nuevo;
+    p = l;
+    while (p->sgte != NULL)
+        p = p->sgte;
+    p->sgte = nuevo;
+    return l;
+    }   
+
+nodo *insertar_ordenado(nodo *l, int d) {
+ nodo *nuevo, *aux;
+
+ nuevo = (nodo*) malloc(sizeof(nodo));
+ nuevo->dato = d;
+ if (l == NULL || l->dato > d) {
+ nuevo->sgte = l;
+ return nuevo;
+ }
+ aux = l;
+ while (aux->sgte != NULL && aux->sgte->dato <= d)
+ aux = aux->sgte;
+ nuevo->sgte = aux->sgte;
+ aux->sgte = nuevo;
+ return l;
+}
+
+void mostrar(nodo *l){
+
+    while(l != NULL){
+        printf("%d ", l->dato);
+        l = l->sgte; 
+    }
+    return;
+}
+
+nodo *destruir(nodo *l){
+    nodo *aux;
+
+    while (l != NULL){
+        aux = l;
+        l = l->sgte;
+        free(aux);
+    }
+
+    printf("Lista destruida");
+    return NULL;
+}

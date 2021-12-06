@@ -1,0 +1,147 @@
+//Ejercicio 1. Printea el valor del registro del rtc que se ingresa
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/io.h>
+
+#define P 0x70
+
+//Esta funcion devuelve el valor guardado en cierto registro
+unsigned char in(unsigned char registro){
+    outb(registro, P); //se accede al valor a traves del puerto 0x71 (se posiciona en ese registro)
+    return inb(P + 1); //se toma/devuelve/lee ese valor a traves del puerto 0x71 (puerto P + 1)
+}
+
+int main(){
+    unsigned char registro, valor;
+    //Pido permisos para acceder a 0x70 y 0x71
+    if (ioperm(P, 2, 1)){   //Desde P, abarcando 2 puertos y leyendo 1 byte
+        perror("ioperm");
+        exit(1);
+    }
+
+    do
+    {
+        printf("Ingrese un numero de registro del 1 al 13: ");
+        scanf("%hhx", &registro);
+    }while (registro < 0 || registro > 13);
+
+    /*Falta verificar que el UIP del registro A para chequear que el reloj no este actualizandose*/
+
+    valor = in(registro);
+    printf("El dato dentro de ese registro es: %hhx\n", valor);
+    
+    //Retirar permisos
+    if (ioperm(P, 2, 0)){
+        perror("ioperm");
+        exit(1);
+    }
+
+    return 0;    
+}
+---------------------------------------------------------------------------------------------------
+//Ejercicio 2/3. Imprimir los valores de cada registro junto con su equivalente en binario
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/io.h>
+
+#define P 0x70
+
+//Esta funcion devuelve el valor guardado en cierto registro
+unsigned char in(unsigned char registro){
+    outb(registro, P); //se accede al valor a traves del puerto 0x71 (se posiciona en ese registro)
+    return inb(P + 1); //se toma/devuelve/lee ese valor a traves del puerto 0x71 (puerto P + 1)
+}
+
+//Conversor a binario
+void convertir_b(unsigned char numero){
+  int i, binario[8] = {0,0,0,0,0,0,0,0};
+
+  for (i = 0; numero > 0; i++){
+    binario[i] = numero % 2;
+    numero = numero / 2;
+  }
+
+  for (i = 7; i >= 0; i--){
+    printf("%d", binario[i]);
+  }
+  return;
+}
+
+int main(){
+    unsigned char seg, seg_al, min, min_al, horas, horas_al, dia_semana, dia_mes, mes, anio, a, b, c, d;
+
+    if (ioperm(P, 2, 1)){
+        perror("ioperm");
+        exit(1);
+    };
+
+    //Leer registro A
+    a = in(0x0A);
+    if ((a & (0x80)) != 0){
+        usleep(1984); //Ver en mi cuaderno que quiere decir esto
+    };
+
+    seg = in(0x00);
+    seg_al = in(0x01);
+    min = in(0x02);
+    min_al = in(0x03);
+    horas = in(0x04);
+    horas_al = in(0x05);
+    dia_semana = in(0x06);
+    dia_mes = in(0x07);
+    mes = in(0x08);
+    anio = in(0x09);
+    b = in(0x0B);
+    c = in(0x0C);
+
+    printf("Segundos: %hhx ", seg);
+    convertir_b(seg);
+    printf("\n");
+    printf("Segundos de alarma:  %hhx ", seg_al);
+    convertir_b(seg_al);
+    printf("\n");
+    printf("Minutos: %hhx  ", min);
+    convertir_b(min);
+    printf("\n");
+    printf("Minutos de alarma:  %hhx ", min_al);
+    convertir_b(min_al);
+    printf("\n");
+    printf("Horas: %hhx  ", horas);
+    convertir_b(horas);
+    printf("\n");
+    printf("Horas de alarma: %hhx ", horas_al);
+    convertir_b(horas_al);
+    printf("\n");
+    printf("Dia de la semana: %hhx  ", dia_semana);
+    convertir_b(dia_semana);
+    printf("\n");
+    printf("Dia del mes: %hhx  ", dia_mes);
+    convertir_b(dia_mes);
+    printf("\n");
+    printf("Mes: %hhx  ", mes);
+    convertir_b(mes);
+    printf("\n");
+    printf("Año: %hhx  ", anio);
+    convertir_b(anio);
+    printf("\n");
+    printf("Registro A: %hhx  ", a);
+    convertir_b(a);
+    printf("\n");
+    printf("Registro B: %hhx  ", b);
+    convertir_b(b);
+    printf("\n");
+    printf("Registro C: %hhx  ", c);
+    convertir_b(c);
+    printf("\n");
+
+    //Retirar permisos
+    if (ioperm(P, 2, 0)){
+        perror("ioperm");
+        exit(1);
+    }
+
+    return 0;    
+}
+---------------------------------------------------------------------------------------------------

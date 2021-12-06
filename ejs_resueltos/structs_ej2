@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct estudiante {
+  int legajo;
+  char nombre[50];
+  float promedio;
+};
+
+int main() {
+  int c, i = 0;
+  struct estudiante estudiantes[100];
+  /*float max = 0;*/
+  FILE *arch;
+
+  /*Abro archivo*/
+  arch = fopen("estudiantes.dat", "rb");
+  if (arch == NULL){
+    printf("\nError al abrir el archivo\n");
+    return 1;
+  }
+
+  /*Leo archivo*/
+  c = fread(estudiantes, sizeof(estudiantes), 1, arch);
+  while (c == 1){
+    printf("promedio = %f", estudiantes[i].promedio);
+    i++;
+    c = fread(estudiantes, sizeof(estudiantes), 1, arch);
+  };
+
+  /*printf("El promedio maximo es %f", max);*/
+
+  c = fclose(arch);
+  if (c != 0){
+    printf("Ocurrio un error al cerrar el archivo\n");
+  }
+
+  return 0;
+}

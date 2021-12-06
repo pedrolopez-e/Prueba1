@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+struct punto {
+  float x;
+  float y;
+};
+
+int main() {
+  float d_euclidea;
+  struct punto p1, p2;
+
+  printf("Ingrese la coordenada 'x' de un punto:\n");
+  scanf("%f", &p1.x);
+  printf("Ingrese la coordenada 'y' del punto:\n");
+  scanf("%f", &p1.y);
+  printf("Ingrese la coordenada 'x' del otro punto:\n");
+  scanf("%f", &p2.x);
+  printf("Ingrese la coordenada 'y' del otro punto:\n");
+  scanf("%f", &p2.y);
+
+  d_euclidea = sqrtf(pow((p2.x - p1.x), 2) + pow((p2.y - p2.x), 2));
+  printf("%f", d_euclidea);
+  return 0;
+}
